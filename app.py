@@ -1,6 +1,8 @@
 import streamlit as st
 import pickle
 import requests
+import os
+import gdown
 
 
 def fetch(movie_id):
@@ -29,7 +31,13 @@ def recommend(movie):
 movies_df = pickle.load(open('movies.pkl', 'rb'))
 movies_list = movies_df['title'].values
 
-similarity = pickle.load(open('similarity.pkl', 'rb'))
+
+if not os.path.exists("similarity.pkl"):
+    url = "https://drive.google.com/uc?id=1OEEfJPAv05eiyTdk0K_jkRJTPhrIcnT0"
+    gdown.download(url, "similarity.pkl", quiet=False)
+with open("similarity.pkl", "rb") as f:
+    similarity = pickle.load(f)
+
 
 st.title("Movie Recommender System")
 selected_movie_name = st.selectbox('How would like to be contacted?',
